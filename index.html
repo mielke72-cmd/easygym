@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3-Day Workout — Christian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --grass:   #3a6b3c;
+    --grass-lt:#eef4ee;
+    --sky:     #1d6fa4;
+    --sky-lt:  #e8f3fa;
+    --sand:    #b07d2c;
+    --sand-lt: #fdf5e6;
+    --ink:     #1a1f1a;
+    --ink-2:   #3d4a3e;
+    --ink-3:   #6b7a6c;
+    --ink-4:   #a0afa1;
+    --page:    #f7f9f5;
+    --card:    #ffffff;
+    --border:  #dde6dd;
+    --border-strong: #c4d4c4;
+    --radius:  10px;
+    --shadow:  0 1px 3px rgba(30,50,30,0.06), 0 4px 12px rgba(30,50,30,0.04);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--grass);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 16px;
+  }
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .logo-sub {
+    font-size: 12px;
+    color: var(--ink-3);
+    font-weight: 400;
+  }
+
+  /* ── Day tabs ── */
+  .day-bar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 56px;
+    z-index: 90;
+  }
+  .day-bar-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+  }
+  .day-tab {
+    padding: 14px 20px 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-3);
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    flex: 1;
+    text-align: center;
+  }
+  .day-tab .tab-label { font-size: 13px; font-weight: 600; }
+  .day-tab .tab-sub   { font-size: 11px; color: var(--ink-4); font-weight: 400; }
+  .day-tab.active { color: var(--grass); border-bottom-color: var(--grass); }
+  .day-tab.active .tab-sub { color: var(--grass); opacity: 0.7; }
+  .day-tab:hover:not(.active) { color: var(--ink-2); }
+
+  /* ── Main layout ── */
+  .main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 4rem;
+  }
+
+  .day-panel { display: none; }
+  .day-panel.active { display: block; }
+
+  /* ── Session hero ── */
+  .session-hero {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--grass-lt);
+    border: 1px solid #c8ddc8;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .session-hero .hero-icon {
+    width: 44px; height: 44px;
+    background: var(--grass);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .hero-title { font-size: 18px; font-weight: 600; color: var(--grass); line-height: 1.2; }
+  .hero-meta  { font-size: 13px; color: #5a8a5c; margin-top: 3px; }
+  .hero-desc  { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.5; }
+
+  /* ── Section label ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin: 1.5rem 0 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Exercise card ── */
+  .ex-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .ex-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .ex-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow); }
+
+  .ex-dot {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .dot-mob  { background: #e6f4e7; color: var(--grass); }
+  .dot-str  { background: var(--sky-lt); color: var(--sky); }
+  .dot-core { background: var(--sand-lt); color: var(--sand); }
+
+  .ex-body { flex: 1; min-width: 0; }
+
+  .ex-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .ex-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .yt-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #c00;
+    text-decoration: none;
+    background: #fff3f3;
+    border: 1px solid #f5cccc;
+    border-radius: 20px;
+    padding: 3px 9px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.12s;
+  }
+  .yt-btn:hover { background: #ffe0e0; }
+  .yt-btn .ti { font-size: 12px; }
+
+  .ex-detail {
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .ex-tip {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-top: 4px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .ex-tip::before { content: '↳ '; color: var(--ink-4); }
+
+  /* ── Note card ── */
+  .note-card {
+    background: var(--sand-lt);
+    border: 1px solid #e8d4a8;
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.5;
+    margin-top: 1rem;
+  }
+  .note-card strong { color: var(--sand); }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    padding: 10px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+  .leg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+  .leg-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── Footer ── */
+  .footer-note {
+    margin-top: 2rem;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 13px;
+    color: var(--ink-3);
+    line-height: 1.6;
+  }
+  .footer-note strong { color: var(--ink-2); }
+
+  /* ── Responsive ── */
+  @media (max-width: 520px) {
+    .day-tab { padding: 12px 10px 10px; }
+    .day-tab .tab-label { font-size: 12px; }
+    .session-hero { flex-direction: column; }
+    .main { padding: 1rem 1rem 4rem; }
+    .site-header { padding: 0 1rem; }
+    .day-bar { padding: 0 1rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon" aria-hidden="true"><i class="ti ti-golf"></i></div>
+      <div>
+        <div class="logo-text">3-Day Routine</div>
+        <div class="logo-sub">Strength · Mobility · Golf</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="day-bar" aria-label="Workout days">
+  <div class="day-bar-inner">
+    <button class="day-tab active" onclick="showDay(0,this)" aria-selected="true">
+      <span class="tab-label">Day A</span>
+      <span class="tab-sub">Mon / Tue</span>
+    </button>
+    <button class="day-tab" onclick="showDay(1,this)" aria-selected="false">
+      <span class="tab-label">Day B</span>
+      <span class="tab-sub">Wed / Thu</span>
+    </button>
+    <button class="day-tab" onclick="showDay(2,this)" aria-selected="false">
+      <span class="tab-label">Day C</span>
+      <span class="tab-sub">Fri / Sat</span>
+    </button>
+  </div>
+</nav>
+
+<main class="main" id="main">
+
+  <!-- ══ DAY A ══ -->
+  <section class="day-panel active" id="day0" aria-label="Day A workout">
+
+    <div class="legend" role="list" aria-label="Exercise type legend">
+      <div class="leg" role="listitem"><div class="leg-dot" style="background:var(--grass)" aria-hidden="true"></div> Mobility</div>
+      <div class="leg" role="listitem"><div class="leg-dot" style="background:var(--sky)" aria-hidden="true"></div> Strength</div>
+      <div class="leg" role="listitem"><div class="leg-dot" style="background:var(--sand)" aria-hidden="true"></div> Core</div>
+    </div>
+
+    <div class="session-hero">
+      <div class="hero-icon" aria-hidden="true"><i class="ti ti-rotate"></i></div>
+      <div>
+        <div class="hero-title">Lower body + hip mobility</div>
+        <div class="hero-meta">~40 min &nbsp;·&nbsp; Golf swing focus</div>
+        <div class="hero-desc">Hip mobility and glute activation — the foundation of your swing. The most important session of the three.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Warm-up · 10 min</div>
+    <div class="ex-list">
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-rotate"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">90/90 hip switches</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=HUZimFZJZWU" target="_blank" rel="noopener" aria-label="Watch 90/90 hip switches tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">5 each side × 2 sets — rotate between internal and external hip positions on the floor</div>
+          <div class="ex-tip">The single best move for golf hip rotation. Slow and deliberate.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-arrows-move"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">World's greatest stretch</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=-CiWQ2IvY34" target="_blank" rel="noopener" aria-label="Watch world's greatest stretch tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">5 each side — lunge + thoracic rotation + reach (Squat University)</div>
+          <div class="ex-tip">Combines hip flexor, hip mobility and upper body in one. Don't rush it.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-circle"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Hip circles on all fours</span>
+          </div>
+          <div class="ex-detail">10 each direction, each hip — draw big slow circles with your knee</div>
+          <div class="ex-tip">Opens the joint capsule. Foam roller nearby if your knees need padding.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-arrows-left-right"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Lateral band walks</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=20rhTxoJVuw" target="_blank" rel="noopener" aria-label="Watch lateral band walks tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">Band around knees, side-step 10 each way × 2 sets</div>
+          <div class="ex-tip">Activates glute med — key for hip stability through the downswing.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Strength · 20 min</div>
+    <div class="ex-list">
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-barbell"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Goblet squat</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=yGswPtbSlro" target="_blank" rel="noopener" aria-label="Watch goblet squat tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 10–12 reps · one dumbbell held at chest · moderate weight</div>
+          <div class="ex-tip">Spine-friendly squat. Keep chest tall, heels grounded throughout.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-line"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Single-leg Romanian deadlift</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=iS7atZhcRnw" target="_blank" rel="noopener" aria-label="Watch single-leg RDL tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 8 each side · one light-moderate dumbbell · balance-focused</div>
+          <div class="ex-tip">Use a wall for support if needed — no shame at all starting that way.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-minus"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Glute bridge</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=wPM8icPu6H8" target="_blank" rel="noopener" aria-label="Watch glute bridge tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 15 reps · bodyweight or dumbbell on hips · pause 2 sec at top</div>
+          <div class="ex-tip">L5-S1 safe and excellent for the posterior chain. Feel your glutes, not your back.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Cool-down · 5 min</div>
+    <div class="ex-list">
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-wave-sine"></i></div>
+        <div class="ex-body">
+          <div class="ex-top"><span class="ex-name">Foam roller — glutes and hip flexors</span></div>
+          <div class="ex-detail">1–2 min each side · slow rolling · pause on tight spots</div>
+          <div class="ex-tip">Worth spending the full time here. These muscles did the work.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ DAY B ══ -->
+  <section class="day-panel" id="day1" aria-label="Day B workout">
+
+    <div class="legend" role="list" aria-label="Exercise type legend">
+      <div class="leg" role="listitem"><div class="leg-dot" style="background:var(--grass)" aria-hidden="true"></div> Mobility</div>
+      <div class="leg" role="listitem"><div class="leg-dot" style="background:var(--sky)" aria-hidden="true"></div> Strength</div>
+    </div>
+
+    <div class="session-hero">
+      <div class="hero-icon" aria-hidden="true"><i class="ti ti-rotate-clockwise"></i></div>
+      <div>
+        <div class="hero-title">Upper body + thoracic mobility</div>
+        <div class="hero-meta">~40 min &nbsp;·&nbsp; Stiffness focus</div>
+        <div class="hero-desc">Thoracic spine work to open your rotation and reduce that top-of-swing stiffness. Upper body strength to match.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Warm-up · 10 min</div>
+    <div class="ex-list">
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-rotate-clockwise"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Thoracic rotation — seated</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=pLerj04KsHw" target="_blank" rel="noopener" aria-label="Watch thoracic rotation tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">10 each direction × 2 sets — hands behind head, rotate slowly through mid-back</div>
+          <div class="ex-tip">The big unlock for your upper body. Focus on the t-spine, not the lower back.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-wave-sine"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Foam roller thoracic extension</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=9Y11Kc0E0og" target="_blank" rel="noopener" aria-label="Watch thoracic extension tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">Roller across mid-back, hands behind head, extend over it — 8 positions along the spine, 3 reps each</div>
+          <div class="ex-tip">Do NOT roll onto your lumbar spine. Stop at the waistline.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-arrows-up-down"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Cat-cow + thread the needle</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=M3KfxnnJxKs" target="_blank" rel="noopener" aria-label="Watch cat-cow and thread the needle tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">10 cat-cows, then 8 thread-the-needle each side — follow-along video</div>
+          <div class="ex-tip">Just press play and move with it. Great for shoulder and upper back stiffness.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Strength · 20 min</div>
+    <div class="ex-list">
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-trending-up"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Dumbbell incline press</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=IP4oeKh1Sd4" target="_blank" rel="noopener" aria-label="Watch incline press tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 10–12 reps · moderate weight · 45° incline · control the descent</div>
+          <div class="ex-tip">Chest and shoulders without heavy spinal load.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-arrow-back-up"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Single-arm dumbbell row</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=fURsHPHgssI" target="_blank" rel="noopener" aria-label="Watch dumbbell row tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 10–12 reps each side · bench supported · pull elbow to hip · spine neutral</div>
+          <div class="ex-tip">Rowing is vital for posture and swing plane.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-arrows-horizontal"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Band pull-apart</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=u4avLfESES4" target="_blank" rel="noopener" aria-label="Watch band pull-apart tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 15 reps · arms forward at shoulder height, pull band to chest</div>
+          <div class="ex-tip">Counters forward posture from desk work. Rear delts and upper back.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-hand-stop"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Dumbbell lateral raise</span>
+          </div>
+          <div class="ex-detail">2 sets × 12 reps · light weight · controlled · avoid shrugging</div>
+          <div class="ex-tip">Shoulder stability matters in the golf swing.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Cool-down · 5 min</div>
+    <div class="ex-list">
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-door-enter"></i></div>
+        <div class="ex-body">
+          <div class="ex-top"><span class="ex-name">Doorway chest stretch</span></div>
+          <div class="ex-detail">45 sec each arm · 2 positions (elbow low + elbow high)</div>
+          <div class="ex-tip">Most desk workers are chronically tight here. Hold, breathe, release.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ DAY C ══ -->
+  <section class="day-panel" id="day2" aria-label="Day C workout">
+
+    <div class="legend" role="list" aria-label="Exercise type legend">
+      <div class="leg" role="listitem"><div class="leg-dot" style="background:var(--grass)" aria-hidden="true"></div> Mobility</div>
+      <div class="leg" role="listitem"><div class="leg-dot" style="background:var(--sky)" aria-hidden="true"></div> Strength</div>
+      <div class="leg" role="listitem"><div class="leg-dot" style="background:var(--sand)" aria-hidden="true"></div> Core</div>
+    </div>
+
+    <div class="session-hero">
+      <div class="hero-icon" aria-hidden="true"><i class="ti ti-arrows-shuffle"></i></div>
+      <div>
+        <div class="hero-title">Full body + core</div>
+        <div class="hero-meta">~40 min &nbsp;·&nbsp; Integration session</div>
+        <div class="hero-desc">Ties everything together. Lighter loads, movement quality focus, and the anti-rotation core work your swing demands.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Warm-up · 8 min</div>
+    <div class="ex-list">
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-rotate"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">90/90 + thoracic rotation combo</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=HUZimFZJZWU" target="_blank" rel="noopener" aria-label="Watch 90/90 combo tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">5 each side — rotate the hip, then add upper body rotation over the front knee</div>
+          <div class="ex-tip">Mimics the hip-trunk separation your swing needs.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-mob" aria-hidden="true"><i class="ti ti-arrow-curve-left"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Lunge with torso rotation</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=T6j7BpxeqqU" target="_blank" rel="noopener" aria-label="Watch lunge rotation tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">8 each side — step forward, rotate upper body over front leg, step back</div>
+          <div class="ex-tip">Golf-specific pattern. Rotate from t-spine, not the lower back.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Strength · 18 min</div>
+    <div class="ex-list">
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-refresh"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Dumbbell Romanian deadlift</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=iS7atZhcRnw" target="_blank" rel="noopener" aria-label="Watch Romanian deadlift tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 10 reps · two legs · moderate weight · hinge at hips, soft knees</div>
+          <div class="ex-tip">Stop when you feel the hamstrings — not the lower back.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-trending-up"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Push-up (elevated if needed)</span>
+          </div>
+          <div class="ex-detail">3 sets × 8–15 reps · hands on bench for easier variation</div>
+          <div class="ex-tip">Adjust to your energy that day. Bench elevation makes it very manageable.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-str" aria-hidden="true"><i class="ti ti-arrows-up-down"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Band face pull</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=AlTGQrDOd98" target="_blank" rel="noopener" aria-label="Watch band face pull tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 15 reps · anchor band at face height · pull to ears · elbows high</div>
+          <div class="ex-tip">Rear delt and rotator cuff health. Critical for shoulder durability in golf.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Core · 10 min</div>
+    <div class="ex-list">
+
+      <div class="ex-card">
+        <div class="ex-dot dot-core" aria-hidden="true"><i class="ti ti-focus"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Dead bug</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=bxn9FBrt4-A" target="_blank" rel="noopener" aria-label="Watch dead bug tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 sets × 8 each side · slow and controlled · lower back pressed flat to floor (NASM)</div>
+          <div class="ex-tip">The safest and most effective core exercise for L5-S1. No crunching whatsoever.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-core" aria-hidden="true"><i class="ti ti-minus"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Plank</span>
+          </div>
+          <div class="ex-detail">3 × 20–40 sec · forearms · neutral spine · don't hold your breath</div>
+          <div class="ex-tip">Short holds done well beat long holds done badly. Stop before form breaks.</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-dot dot-core" aria-hidden="true"><i class="ti ti-arrows-left-right"></i></div>
+        <div class="ex-body">
+          <div class="ex-top">
+            <span class="ex-name">Pallof press (band)</span>
+            <a class="yt-btn" href="https://www.youtube.com/watch?v=lqPrSGXfL1Q" target="_blank" rel="noopener" aria-label="Watch Pallof press tutorial on YouTube"><i class="ti ti-brand-youtube"></i> Watch</a>
+          </div>
+          <div class="ex-detail">3 × 10 each side · anchor band at chest height · press straight out · hold 2 sec</div>
+          <div class="ex-tip">Anti-rotation training — exactly what your core needs to do in the swing.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note-card">
+      <strong>Note on the ab roller:</strong> Hold off for now — it loads the lumbar spine significantly. Once your core baseline is solid after 8–10 weeks, you can start with short roll-outs from your knees.
+    </div>
+
+  </section>
+
+  <div class="footer-note">
+    <strong>General approach:</strong> Aim for 2 min rest between strength sets. If a session feels like too much on a given day, drop one strength exercise — the mobility work is non-negotiable. Rest at least one day between sessions. Sessions should feel manageable, not punishing.
+  </div>
+
+</main>
+
+<script>
+  function showDay(idx, btn) {
+    document.querySelectorAll('.day-panel').forEach((p, i) => {
+      p.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.day-tab').forEach((t, i) => {
+      t.classList.toggle('active', i === idx);
+      t.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+    });
+    document.getElementById('main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+
+</body>
+</html>
